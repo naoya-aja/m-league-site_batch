@@ -291,7 +291,7 @@ function csvoutput($file, $arr) {
 }
 
 // チーム成績
-$csv_heder = array('順位', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', 'a');
+$csv_heder = array('順位', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', '');
 array_unshift($ranking_teams, $csv_heder);
 $file = __DIR__ . '/2020-regular-tm.csv';
 csvoutput($file, $ranking_teams);
