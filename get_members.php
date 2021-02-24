@@ -291,13 +291,13 @@ function csvoutput($file, $arr) {
 }
 
 // チーム成績
-$csv_heder = array('順位', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', '');
+$csv_heder = array('#', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', '');
 array_unshift($ranking_teams, $csv_heder);
 $file = __DIR__ . '/2020-regular-tm.csv';
 csvoutput($file, $ranking_teams);
 
 // 個人成績
-$csv_heder = array('順位' ,'選手名' ,'チーム' ,'半荘数' ,'Pt' ,'最高スコア' ,'4着回避率' ,'1着' ,'2着' ,'3着' ,'4着');
+$csv_heder = array('#' ,'選手名' ,'チーム' ,'半荘数' ,'Pt' ,'最高スコア' ,'4着回避率' ,'1着' ,'2着' ,'3着' ,'4着');
 array_unshift($ranking_members, $csv_heder);
 $file = __DIR__ . '/2020-regular-indiv.csv';
 csvoutput($file, $ranking_members);

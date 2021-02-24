@@ -22,6 +22,9 @@ foreach ($file as $row) {
 	if (count($records) >= 4) break;
 }
 
+$csv_heder = array('日付', '対戦チーム', '', '', '');
+array_unshift($records, $csv_heder);
+
 $file = new SplFileObject($filepath_out, 'w');
 foreach ($records as $line) {
 	$file->fputcsv($line);
