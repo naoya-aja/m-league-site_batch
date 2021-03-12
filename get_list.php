@@ -93,8 +93,8 @@ foreach ($gamesList as $key => $geme) {
 	$geme = pq($geme);
 	$date = cdate($geme->find('.p-gamesResult__date')->text());
 
-	// レギュラー 3/9まで
-	if (strtotime($date) > strtotime('2021-03-10')) continue;
+	// レギュラー 3/12まで
+	if (strtotime($date) > strtotime('2021-03-13')) continue;
 
 	// echo $date."\n";
 	$ts = strtotime($date);
