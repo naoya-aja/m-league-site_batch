@@ -5,6 +5,7 @@
  * 	ABEMA TIMES:	3
  * 	Mリーグ公式:	2
  * 	麻雀ウォッチ:	4
+ * 	キンマweb:		5
  */
 // /home/xxxx/batch/test
 // /home/xxxx/www/m-league/
@@ -102,7 +103,7 @@ if ( $the_query->have_posts() ) {
 }
 
 // 各記事を公開にする
-$user_logos = array_combine([2, 4], [444, 1540]);
+$user_logos = array_combine([2, 4, 5], [444, 1540, 2993]);
 $args = $args_org;
 unset($args['author']);
 $the_query = new WP_Query( $args );
