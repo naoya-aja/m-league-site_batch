@@ -50,9 +50,12 @@ function set_featured_image($post_id, $tmp_path, $ext) {
 	set_post_thumbnail( $post_id, $attach_id );
 }
 
-$args = ['s' => 'Mリーグ'] + $args_org;
-$the_query = new WP_Query( $args );
-if ( $the_query->have_posts() ) {
+$keywords = ['Mリーグ', 'Mリーガー'];
+foreach ($keywords as $keyword) {
+	$args = ['s' => $keyword] + $args_org;
+	$the_query = new WP_Query( $args );
+	if ( !$the_query->have_posts() ) continue;
+
 	while ( $the_query->have_posts() ) {
 		$the_query->the_post();
 		$post_id = get_the_ID();
@@ -94,7 +97,7 @@ if ( $the_query->have_posts() ) {
 		$the_query->the_post();
 		$post_id = get_the_ID();
 		$i++;
-		if ($i < 100) continue;
+		if ($i < 200) continue;
 		wp_delete_post($post_id, true);
 
 		printf("id:%d delete ***\n", $post_id);
