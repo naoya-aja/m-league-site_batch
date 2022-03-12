@@ -8,7 +8,7 @@ cd `dirname $0`
 /usr/local/bin/php get_list.php 2>&1 1>/dev/null
 /usr/local/bin/php get_members.php 2>&1 1>/dev/null
 
-JSON_DIR="/home/xxxx/www/m-league/chart"
+JSON_DIR="/home/xxxx/www/m-league/chart/2021"
 
 mv -f *.json $JSON_DIR/ 2>&1 1>/dev/null
 mv -f *.csv csv/ 2>&1 1>/dev/null
