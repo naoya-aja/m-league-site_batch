@@ -10,11 +10,12 @@ $base_url = 'https://m-league.jp/games';
 $season_year = 2021;
 
 // $term_nm = 'regular';
-// $this_term = ['2021-10-04', '2022-03-11'];
 $term_nm = 'semifinal';
-$this_term = ['2022-03-21', '2022-04-08'];
 // $term_nm = 'final';
-// $this_term = ['2022-04-18', '2022-04-26'];
+$regular_term = ['2021-10-04', '2022-03-11'];
+$semifinal_term = ['2022-03-21', '2022-04-08'];
+$final_term = ['2022-04-18', '2022-04-26'];
+$this_term = ${"${term_nm}_term"};
 
 // 進出チーム
 $teams = array(
