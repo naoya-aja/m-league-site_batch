@@ -113,10 +113,10 @@ if ( $the_query->have_posts() ) {
 		if (empty($date_match))	continue;
 
 		// var_dump($title);
+		$match_title = $date_match[0];
 		$round = intval($date_match[$pattern_round_index]);
 		if (!in_array($round, [1, 2])) {
-			$msg = sprintf('[%s]: %s,%d: Round No Error: %s%s', date("Y-m-d H:i:s"),
-				$the_slug, $round, $title, PHP_EOL);
+			$msg = sprintf('[%s]: Round No Error: %s%s', date("Y-m-d H:i:s"), $match_title, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			continue;
 		}
@@ -125,7 +125,7 @@ if ( $the_query->have_posts() ) {
 		if ($ts < strtotime($season_start)) $ts = strtotime('+1 year', $ts);
 		if (!empty($finish_date) && $ts <= strtotime($finish_date)) {
 			error_log(sprintf(
-				'[%s]: %s,%d: 日付逆順エラー: %s', date("Y-m-d H:i:s"), $the_slug, $round, PHP_EOL),
+				'[%s]: 日付逆順エラー: %s%s', date("Y-m-d H:i:s"), $match_title, PHP_EOL),
 				3, $file_errors_log
 			);
 			continue;
@@ -138,7 +138,7 @@ if ( $the_query->have_posts() ) {
 			continue;
 		}
 		if ($save_news['the_slug'] != $the_slug) {
-			$msg = sprintf('[%s]: %s,%d - %s,%d: 日付エラー%s', date("Y-m-d H:i:s"),
+			$msg = sprintf('[%s]: 日付エラー: %s,%d - %s,%d%s', date("Y-m-d H:i:s"),
 				$save_news['the_slug'], $save_news['round'], $the_slug, $round, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			$save_news = compact('the_slug', 'round', 'url');
@@ -150,7 +150,7 @@ if ( $the_query->have_posts() ) {
 		} elseif ($round == 2 && $save_news['round'] == 1) {
 			$urls = [$save_news['url'], $url];
 		} else {
-			$msg = sprintf('[%s]: %s (%d,%d): Roundエラー%s', date("Y-m-d H:i:s"),
+			$msg = sprintf('[%s]: Roundエラー: %s (%d,%d)%s', date("Y-m-d H:i:s"),
 				$the_slug, $save_news['round'], $round, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			$save_news = [];
@@ -158,7 +158,7 @@ if ( $the_query->have_posts() ) {
 		}
 		var_dump($the_slug);
 		if (!update_game_post($the_slug, $urls)) {
-			$msg = sprintf('[%s]: %s: update_game_post ERROR%s', date("Y-m-d H:i:s"), $the_slug, PHP_EOL);
+			$msg = sprintf('[%s]: update_game_post ERROR: %s%s', date("Y-m-d H:i:s"), $the_slug, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			break;	// 更新できない場合は終了
 		}
