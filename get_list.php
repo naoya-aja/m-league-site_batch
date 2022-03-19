@@ -4,6 +4,7 @@
  * TablePress 連携
  */
 require_once('phpQuery-onefile.php');
+require_once('lib.php');
 require_once('config.php');
 
 // 試合結果一覧日付リンク生成
@@ -16,27 +17,27 @@ function dateurl($date) {
 }
 
 function game_yield() {
-	global $base_url, $regular_term, $teams, $members;
+	global $base_url, $this_term, $teams, $members;
 
 	$html = file_get_contents($base_url);
 	$doc = phpQuery::newDocument($html);
-	
+
 	$round = 0;
 	$gamesList = $doc->find(".p-gamesResult");
 	foreach ($gamesList as $key => $geme) {
 		if ($key < 1) continue;	// 調整
 		$geme = pq($geme);
 		$date = cdate($geme->find('.p-gamesResult__date')->text());
-	
-		// 期間チェック レギュラーシーズン
-		list($st, $ed) = $regular_term;
+
+		// 期間チェック
+		list($st, $ed) = $this_term;
 		if (strtotime($date) < strtotime($st)) continue;
 		if (strtotime($date) > strtotime($ed)) continue;
 		// echo $date."\n";
 
 		$strdateurl = dateurl($date);
 		$round2 = 0;
-	
+
 		$lists = $geme->find('.p-gamesResult__rank-list');
 		foreach ($lists as $list) {
 			$round2++;
@@ -49,7 +50,7 @@ function game_yield() {
 				$item = pq($item);
 				$name = trim($item->find('.p-gamesResult__name')->text());
 				$point = cpoint($item->find('.p-gamesResult__point')->text());
-	
+
 				$tname = $teams[$members[$name]];
 				yield array($round, $strdateurl, $round2, $rank, $name, $tname, number_format($point/100, 1));
 			}
@@ -58,17 +59,17 @@ function game_yield() {
 }
 
 $csv_heder = array('', '日付', '回戦', '順位', '選手', 'チーム', 'Pt');
-$results_regular = array($csv_heder);
+$results = array($csv_heder);
 foreach (game_yield() as $arr) {
-	$results_regular[] = $arr;
+	$results[] = $arr;
 }
-// var_dump($results_regular);
+// var_dump($results);
 
-$file = sprintf('%s/%dregular.csv', __DIR__, $season_year);
+$file = sprintf('%s/%d%s.csv', __DIR__, $season_year, $term_nm);
 $f = fopen($file, "w");
 if ( $f ) {
-	foreach($results_regular as $line){
+	foreach($results as $line){
 		fputcsv($f, $line);
-	} 
+	}
 }
 fclose($f);

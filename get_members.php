@@ -1,10 +1,12 @@
 <?php
 require_once('phpQuery-onefile.php');
+require_once('lib.php');
 require_once('config.php');
 
 $key_members = array_keys($members);
 
-$datas = array_fill(0, count($teams), array());
+// $datas = array_fill(0, count($teams), array());
+$datas = $initial_datas;
 $data_members = array_fill(0, count($members), array());
 $array_members = array_fill(0, count($members), array(
 	'point' => 0,
@@ -59,8 +61,8 @@ foreach ($gamesList as $key => $geme) {
 	$geme = pq($geme);
 	$date = cdate($geme->find('.p-gamesResult__date')->text());
 
-	// 期間チェック 2021レギュラーシーズン
-	list($st, $ed) = $regular_term;
+	// 期間チェック
+	list($st, $ed) = $this_term;
 	if (strtotime($date) < strtotime($st)) continue;
 	if (strtotime($date) > strtotime($ed)) continue;
 
@@ -154,15 +156,16 @@ foreach ($array_sort as $i => $point) {
 	$arr[] = $j;
 	$arr[] = $team_name;
 	$arr[] = number_format($point, 1);
+	if ($term_nm != 'regular') $arr[] = number_format($datas[$i][0], 1);
 	foreach ($array_member_sort as $mi => $point) {
 		$member_name = $key_members[$mi];
 		if ($i != $members[$member_name]) continue;
 		$arr[] = $member_name;
 		$arr[] = number_format($point / 100, 1);
 	}
-	$ranking_teams[] = array_pad($arr, 11, '');
+	$length = ($term_nm == 'regular') ? 11 : 12;
+	$ranking_teams[] = array_pad($arr, $length, '');
 }
-
 
 // var_dump($datas);
 // var_dump($data_members);
@@ -197,13 +200,17 @@ function csvoutput($file, $arr) {
 	if ($f) {
 		foreach($arr as $line){
 			fputcsv($f, $line);
-		} 
+		}
 	}
 	fclose($f);
 }
 
 // チーム成績
-$csv_heder = array('#', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', '');
+if ($term_nm == 'regular') {
+	$csv_heder = array('#', 'チーム', 'Pt', '選手成績', '', '', '', '', '', '', '');
+} else {
+	$csv_heder = array('#', 'チーム', 'Pt', '持越', '選手成績', '', '', '', '', '', '', '');
+}
 array_unshift($ranking_teams, $csv_heder);
 $file = sprintf('%s/%d-%s-tm.csv', __DIR__, $season_year, $term_nm);
 csvoutput($file, $ranking_teams);

@@ -9,11 +9,22 @@ $base_url = 'https://m-league.jp/games';
  */
 $season_year = 2021;
 
-$regular_term = ['2021-10-04', '2022-03-11'];
-$semifinal_term = ['2022-03-21', '2022-04-08'];
-$final_term = ['2022-04-18', '2022-04-26'];
+// $term_nm = 'regular';
+// $this_term = ['2021-10-04', '2022-03-11'];
+$term_nm = 'semifinal';
+$this_term = ['2022-03-21', '2022-04-08'];
+// $term_nm = 'final';
+// $this_term = ['2022-04-18', '2022-04-26'];
 
-$term_nm = 'regular';
+// 進出チーム
+$teams = array(
+	'風林火山',
+	'サクラナイツ',
+	'麻雀格闘倶楽部',
+	'ABEMAS',
+	'PHOENIX',
+	'Pirates',
+);
 
 // チームメンバー
 $team_members = [
@@ -67,55 +78,23 @@ $team_members = [
 	],
 ];
 
-$teams = array_keys($team_members);
-
 $members = [];
-foreach ($team_members as $tnm => $mems) {
+foreach ($teams as $i => $tnm) {
+	if (empty($team_members[$tnm])) continue;
+	$mems = $team_members[$tnm];
 	foreach ($mems as $mem) {
-		$members[$mem] = array_search($tnm, $teams);
+		$members[$mem] = $i;
 	}
 }
+// var_dump($teams);
+// var_dump($members);
 
-// 日付編集
-function cdate($get_date) {
-	global $season_year;
-	$year = $season_year;
-	$get_date = trim($get_date);
-	$ret_date = $get_date;
-	$len = mb_strpos($get_date, '(');
-	$wdate = mb_substr($get_date, 0, $len);
-	[$month, $day] = explode('/', $wdate);
-	$month = intval($month);
-	$day = intval($day);
-	if ($month < 9) $year++;
-	if (checkdate($month, $day, $year)) {
-		$ts = mktime(0, 0, 0, $month, $day, $year);
-		$ret_date = date('Y-m-d', $ts);
-	}
-	return $ret_date;
-}
-
-// ポイント取得
-// 2022/01/03 魚谷侑未 ペナルティ 65.5(▲20)pt の対応
-function cpoint($point) {
-	$str_minus = '▲';
-	$point = trim($point);
-	$point = mb_ereg_replace('pt', '', $point);
-	$point = str_replace(')', '', $point);
-	$points = explode('(', $point, 2);
-	$sum = 0;
-	foreach ($points as $point) {
-		if (($start = mb_strpos($point, $str_minus)) !== false) {
-			$point = mb_ereg_replace($str_minus, '', $point);
-			$point = '-' . $point;
-		}
-		if (is_numeric($point)) {
-			// $point = intval(bcmul($point, '100'));	// さくらレンタルサーバーでは使えない`bcmul`
-			$point = intval((string)($point * 100));
-		} else {
-			$point = 0;
-		}
-		$sum += $point;
-	}
-	return $sum;
-}
+// 持越分 * 100
+$initial_datas = array(
+	array(9220),	// 風林火山
+	array(8850),	// サクラナイツ
+	array(12450),	// 麻雀格闘倶楽部
+	array(16410),	// ABEMAS
+	array(9210),	// PHOENIX
+	array(18860),	// Pirates
+);
