@@ -3,9 +3,9 @@
  * 試合結果一覧CSV出力
  * TablePress 連携
  */
-require_once('phpQuery-onefile.php');
-require_once('lib.php');
-require_once('config.php');
+require_once(__DIR__ . '/phpQuery-onefile.php');
+require_once(__DIR__ . '/lib.php');
+require_once(__DIR__ . '/config.php');
 
 // 試合結果一覧日付リンク生成
 function dateurl($date) {

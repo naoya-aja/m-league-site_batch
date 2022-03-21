@@ -2,7 +2,7 @@
 /**
  * キンマWEB 試合結果記事を関連記事に埋め込む処理
  */
-require_once('../config.php');
+require_once(dirname(__DIR__) . '/config.php');
 require_once('/home/xxxx/www/m-league/wp-load.php');
 
 // さらに使いたい機能に応じて必要なファイルをinclude
@@ -31,7 +31,7 @@ $pattern_day_index = 4;
 $pattern_round_index = 5;
 $term_no = 1;	// regular: 1, semifinal: 2, final: 3
 
-$file_finish_date = basename(__FILE__, '.php') . '_finish_date.txt';
+$file_finish_date = __DIR__ . '/' . basename(__FILE__, '.php') . '_finish_date.txt';
 $file_errors_log = dirname(__DIR__) . "/log/" . basename(__FILE__, '.php') . '_errors.log';
 $file_schedule = dirname(__DIR__) . '/csv_master/schedule.csv';
 

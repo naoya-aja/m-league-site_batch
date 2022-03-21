@@ -3,7 +3,7 @@
  * 麻雀ウォッチ試合結果記事を関連記事に埋め込む処理
  *
  */
-require_once('../config.php');
+require_once(dirname(__DIR__) . '/config.php');
 require_once('/home/xxxx/www/m-league/wp-load.php');
 
 // さらに使いたい機能に応じて必要なファイルをinclude
@@ -19,8 +19,8 @@ $pattern = "/【(\d{1,2}\/\d{1,2}) +Mリーグ${season_year}(-${season_next_yy})
 $pattern_date_index = 1;
 $pattern_round_index = 4;
 
-$file_finish_date = basename(__FILE__, '.php') . '_finish_date.txt';
-$file_errors_log = "../log/" . basename(__FILE__, '.php') . '_errors.log';
+$file_finish_date = __DIR__ . '/' . basename(__FILE__, '.php') . '_finish_date.txt';
+$file_errors_log = dirname(__DIR__) . "/log/" . basename(__FILE__, '.php') . '_errors.log';
 
 $html_format = <<<EOD
 <!-- wp:embed {"url":"%s","type":"wp-embed","providerNameSlug":"麻雀ウォッチ"} -->

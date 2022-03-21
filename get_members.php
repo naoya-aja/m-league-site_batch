@@ -1,7 +1,7 @@
 <?php
-require_once('phpQuery-onefile.php');
-require_once('lib.php');
-require_once('config.php');
+require_once(__DIR__ . '/phpQuery-onefile.php');
+require_once(__DIR__ . '/lib.php');
+require_once(__DIR__ . '/config.php');
 
 $key_members = array_keys($members);
 
