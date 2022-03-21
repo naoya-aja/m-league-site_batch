@@ -8,3 +8,6 @@ sleep 10
 
 /usr/local/bin/php ./wp/news_post.php
 
+sleep 5
+
+/usr/local/bin/php ./wp/set_featured_image_mjnew.php
