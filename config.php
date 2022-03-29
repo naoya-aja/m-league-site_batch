@@ -17,16 +17,6 @@ $semifinal_term = ['2022-03-21', '2022-04-08'];
 $final_term = ['2022-04-18', '2022-04-26'];
 $this_term = ${"${term_nm}_term"};
 
-// 進出チーム
-$teams = array(
-	'風林火山',
-	'サクラナイツ',
-	'麻雀格闘倶楽部',
-	'ABEMAS',
-	'PHOENIX',
-	'Pirates',
-);
-
 // チームメンバー
 $team_members = [
 	'ドリブンズ' => [
@@ -79,6 +69,30 @@ $team_members = [
 	],
 ];
 
+// regular
+$teams = array_keys($team_members);
+$initial_datas = array_fill(0, count($teams), array());
+if ($term_nm == 'semifinal') {
+	// 進出チーム
+	$teams = array(
+		'風林火山',
+		'サクラナイツ',
+		'麻雀格闘倶楽部',
+		'ABEMAS',
+		'PHOENIX',
+		'Pirates',
+	);
+	// 持越分 * 100
+	$initial_datas = array(
+		array(9220),	// 風林火山
+		array(8850),	// サクラナイツ
+		array(12450),	// 麻雀格闘倶楽部
+		array(16410),	// ABEMAS
+		array(9210),	// PHOENIX
+		array(18860),	// Pirates
+	);
+}
+
 $members = [];
 foreach ($teams as $i => $tnm) {
 	if (empty($team_members[$tnm])) continue;
@@ -89,13 +103,3 @@ foreach ($teams as $i => $tnm) {
 }
 // var_dump($teams);
 // var_dump($members);
-
-// 持越分 * 100
-$initial_datas = array(
-	array(9220),	// 風林火山
-	array(8850),	// サクラナイツ
-	array(12450),	// 麻雀格闘倶楽部
-	array(16410),	// ABEMAS
-	array(9210),	// PHOENIX
-	array(18860),	// Pirates
-);
