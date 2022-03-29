@@ -29,6 +29,29 @@ function setpoint($results) {
 		$k = array_push($data_members[$i], 0);
 	}
 	$k--;
+
+	// 同点計算
+	$rank_list = [0, 1, 2, 3];
+	foreach ($results as $rank => $result) {
+		if ($rank < 1) continue;
+		if ($rank >= count($rank_list)) break;
+		if ($results[$rank - 1]['point'] == $results[$rank]['point'])
+			$rank_list[$rank] = $rank_list[$rank - 1];
+	}
+	$rank_list_key = implode($rank_list);
+	// 同点パターン
+	$rank_scores_list = [
+		implode([0, 1, 2, 3]) => [50000, 10000, -10000, -30000],
+		implode([0, 0, 2, 3]) => [30000, 30000, -10000, -30000],
+		implode([0, 1, 1, 3]) => [50000, 0, 0, -30000],
+		implode([0, 1, 2, 2]) => [50000, 10000, -20000, -20000],
+		implode([0, 0, 2, 2]) => [30000, 30000, -20000, -20000],
+		implode([0, 0, 0, 3]) => [17000, 16500, 16500, -30000],
+		implode([0, 1, 1, 1]) => [50000, -10000, -10000, -10000],
+		implode([0, 0, 0, 0]) => [0, 0, 0, 0],
+	];
+	$rank_scores = isset($rank_scores_list[$rank_list_key]) ? $rank_scores_list[$rank_list_key] : array_values($rank_scores_list)[0];
+
 	foreach ($results as $rank => $result) {
 		$i = $members[$result['name']];
 		$datas[$i][$j] = $result['point'];
@@ -41,13 +64,18 @@ function setpoint($results) {
 		// 半荘数
 		$array_members[$i]['count']++;
 
+		if (!isset($rank_list[$rank])) continue;
+
 		// 最高スコア
-		$rank_scores = array(50000, 10000, -10000, -30000);
-		$score = $result['point'] * 10 + 30000 - $rank_scores[$rank];
-		if ($array_members[$i]['highest_score'] < $score) $array_members[$i]['highest_score'] = $score;
+		$rank_list_key = implode($rank_list);
+		if (isset($rank_scores[$rank])) {
+			$score = $result['point'] * 10 + 30000 - $rank_scores[$rank];
+			if ($array_members[$i]['highest_score'] < $score) $array_members[$i]['highest_score'] = $score;
+		}
 
 		// 各順位カウント
-		$array_members[$i]['count_ranks'][$rank]++;
+		$count_ranks_index = $rank_list[$rank];
+		$array_members[$i]['count_ranks'][$count_ranks_index]++;
 	}
 }
 

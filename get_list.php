@@ -45,14 +45,19 @@ function game_yield() {
 			$list = pq($list);
 			$items = $list->find('.p-gamesResult__rank-item');
 			$rank = 0;
+			$sv_point = 0;
+			$sv_rank = 1;
 			foreach ($items as $item) {
 				$rank++;
 				$item = pq($item);
 				$name = trim($item->find('.p-gamesResult__name')->text());
 				$point = cpoint($item->find('.p-gamesResult__point')->text());
-
+				if ($sv_point != $point) {
+					$sv_point = $point;
+					$sv_rank = $rank;
+				}
 				$tname = $teams[$members[$name]];
-				yield array($round, $strdateurl, $round2, $rank, $name, $tname, number_format($point/100, 1));
+				yield array($round, $strdateurl, $round2, $sv_rank, $name, $tname, number_format($point/100, 1));
 			}
 		}
 	}
