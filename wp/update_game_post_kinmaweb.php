@@ -10,8 +10,20 @@ require_once('/home/xxxx/www/m-league/wp-load.php');
 // require_once(ABSPATH . 'wp-admin/includes/image.php');
 // require_once(ABSPATH . 'wp-admin/includes/file.php');
 
+$file_finish_date = __DIR__ . '/' . basename(__FILE__, '.php') . '_finish_date.txt';
+$file_errors_log = dirname(__DIR__) . "/log/" . basename(__FILE__, '.php') . '_errors.log';
+$file_schedule = dirname(__DIR__) . '/csv_master/schedule.csv';
+
 // $season_year = 2021;	// configを参照するようにする
-$season_start = $season_year . '/10/04';
+// $season_start = $season_year . '/10/04';
+$term_nms = ['regular', 'semifinal', 'final'];
+$term_no = array_search($term_nm, $term_nms);
+if ($term_no === false) {
+	$msg = sprintf('[%s]: シリーズエラー: %s%s', date('c'), $term_nm, PHP_EOL);
+	error_log($msg, 3, $file_errors_log);
+	exit;
+}
+$term_no++;	// regular: 1, semifinal: 2, final: 3
 
 // プロ麻雀リーグ「朝日新聞Mリーグ2020」のセミファイナル5日目、第2戦は
 // プロ麻雀リーグ「朝日新聞Mリーグ2021」の開幕戦となる本日、第1戦は松本吉弘（渋谷ABEMAS）が
@@ -34,11 +46,6 @@ $season_start = $season_year . '/10/04';
 $pattern = "/プロ麻雀リーグ「(大和証券|朝日新聞) *Mリーグ(\d{4})(-\d{2,4})? *(セミファイナルシリーズ)?」の(開幕)?(第)?(\d{1,2})日目、第(\d)戦/";
 $pattern_day_index = 7;
 $pattern_round_index = 8;
-$term_no = 2;	// regular: 1, semifinal: 2, final: 3
-
-$file_finish_date = __DIR__ . '/' . basename(__FILE__, '.php') . '_finish_date.txt';
-$file_errors_log = dirname(__DIR__) . "/log/" . basename(__FILE__, '.php') . '_errors.log';
-$file_schedule = dirname(__DIR__) . '/csv_master/schedule.csv';
 
 $date_list = array();
 $file = new SplFileObject($file_schedule);
