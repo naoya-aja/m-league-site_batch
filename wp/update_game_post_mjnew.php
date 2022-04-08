@@ -14,7 +14,7 @@ require_once('/home/xxxx/www/m-league/wp-load.php');
 // $season_year = 2021;	// configを参照するようにする
 $season_start = $season_year . '/10/01';
 $season_next_yy = ($season_year + 1) % 100;
-$pattern = "/【(\d{1,2}\/\d{1,2}) +Mリーグ${season_year}(-${season_next_yy})? +(SF\d日目 +)?(第)?(\d)(試合|戦目)結果】/";
+$pattern = "/【(\d{1,2}\/\d{1,2}) +Mリーグ${season_year}(-${season_next_yy})? +(SF\d{1,2}日目 +)?(第)?(\d)(試合|戦目)結果】/";
 // $pattern = "/【(\d{1,2}\/\d{1,2}) +Mリーグ(\d{4})(-\d{2})? +(SF)?(第)?(\d)(試合|戦目)結果】/";
 $pattern_date_index = 1;
 $pattern_round_index = 5;
