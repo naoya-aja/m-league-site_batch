@@ -10,8 +10,8 @@ $base_url = 'https://m-league.jp/games';
 $season_year = 2021;
 
 // $term_nm = 'regular';
-$term_nm = 'semifinal';
-// $term_nm = 'final';
+// $term_nm = 'semifinal';
+$term_nm = 'final';
 $regular_term = ['2021-10-04', '2022-03-11'];
 $semifinal_term = ['2022-03-21', '2022-04-08'];
 $final_term = ['2022-04-18', '2022-04-26'];
@@ -90,6 +90,22 @@ if ($term_nm == 'semifinal') {
 		array(16410),	// ABEMAS
 		array(9210),	// PHOENIX
 		array(18860),	// Pirates
+	);
+}
+if ($term_nm == 'final') {
+	// 進出チーム
+	$teams = array(
+		'サクラナイツ',
+		'麻雀格闘倶楽部',
+		'ABEMAS',
+		'PHOENIX',
+	);
+	// 持越分 * 100
+	$initial_datas = array(
+		array(12430),	// サクラナイツ
+		array(9250),	// 麻雀格闘倶楽部
+		array(6200),	// ABEMAS
+		array(6010),	// PHOENIX
 	);
 }
 
