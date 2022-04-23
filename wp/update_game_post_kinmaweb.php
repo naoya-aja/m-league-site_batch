@@ -43,10 +43,17 @@ $term_no++;	// regular: 1, semifinal: 2, final: 3
 // プロ麻雀リーグ「朝日新聞Mリーグ2021-22 セミファイナルシリーズ」の2日目、第1戦
 // プロ麻雀リーグ「朝日新聞Mリーグ2021-2022 セミファイナルシリーズ」の1日目、第2戦
 // プロ麻雀リーグ「朝日新聞Mリーグ2021セミファイナルシリーズ」の最終12日目、第1戦は
+// プロ麻雀リーグ「朝日新聞Mリーグ2021-22 ファイナルシリーズ」の初日、第1戦は
+// プロ麻雀リーグ「朝日新聞Mリーグ2021-22 ファイナルシリーズ」の2日目、第1戦は
 // $pattern = "/プロ麻雀リーグ「(大和証券|朝日新聞) *Mリーグ2021」の(開幕)?(第)?(\d{1,2})日目、第(\d)戦/";
-$pattern = "/プロ麻雀リーグ「(大和証券|朝日新聞) *Mリーグ(\d{4})(-\d{2,4})? *(セミファイナルシリーズ)?」の(開幕|最終)?(第)?(\d{1,2})日目、第(\d)戦/";
+// $pattern = "/プロ麻雀リーグ「(大和証券|朝日新聞) *Mリーグ(\d{4})(-\d{2,4})? *(セミファイナルシリーズ)?」の(開幕|最終)?(第)?(\d{1,2})日目、第(\d)戦/";
+$pattern = "/プロ麻雀リーグ「(大和証券|朝日新聞) *Mリーグ(\d{4})(-\d{2,4})? *(ファイナルシリーズ)?」の(開幕|最終)?(第)?(\d{1,2})日目、第(\d)戦/";
 $pattern_day_index = 7;
 $pattern_round_index = 8;
+$pattern_day = 0;
+// $pattern_day = 1;	// 初日
+// $pattern_day_index = 6;
+// $pattern_round_index = 6;
 
 $date_list = array();
 $file = new SplFileObject($file_schedule);
@@ -149,7 +156,7 @@ if ( $the_query->have_posts() ) {
 		if (empty($date_match))	continue;
 
 		$match_title = $date_match[0];
-		$day = intval($date_match[$pattern_day_index]);
+		$day = $pattern_day > 0 ? $pattern_day : intval($date_match[$pattern_day_index]);
 		$round = intval($date_match[$pattern_round_index]);
 		// var_dump($match_title);
 
