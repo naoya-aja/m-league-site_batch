@@ -56,7 +56,7 @@ function insert_draft_post($date, $title, $content) {
 	var_dump($slug);
 }
 
-function create_draft_post($series_no, $day_no, $date, $url1, $url2, $url3, $sum_day_no) {
+function create_draft_post($series_no, $day_no, $date, $url1, $url2, $sum_day_no) {
 	global $temp_file, $season_year;
 	$series_no = intval($series_no);
 	$day_no = intval($day_no);
@@ -77,15 +77,15 @@ function create_draft_post($series_no, $day_no, $date, $url1, $url2, $url3, $sum
 	$t = $series_titles[$i];
 	$content_title = sprintf($content_title, $season_year, $t, $day_no, $sum_day_no);
 	$content = file_get_contents($temp_file);
-	$content = sprintf($content, $content_title, $url3, $url1, $url2);
+	$content = sprintf($content, $content_title, $url1, $url2);
 
 	insert_draft_post($date, $title, $content);
 }
 
 try {
 	$timezone = new DateTimeZone('Asia/Tokyo');
-	$now = new DateTime('now', $timezone);
-	// $now = new DateTime('2022/03/24', $timezone);
+	// $now = new DateTime('now', $timezone);
+	$now = new DateTime('2022/10/06', $timezone);
 	$now->setTime(0, 0);
 } catch (Exception $e) {
 	var_dump($e->getMessage());
@@ -103,7 +103,7 @@ try {
 }
 foreach ($file as $index => $row) {
 	if ($index <= 0) continue;	// 先頭行はヘッダー
-	list($series_no, $day_no, $date, $url1, $url2, $url3) = $row;
+	list($series_no, $day_no, $date, $url1, $url2) = $row;
 	if (!empty($tg_row) && $tg_row[0] != $series_no) break;
 	try {
 		$date = new DateTime($date, $timezone);

@@ -51,7 +51,7 @@ https://twitter.com/m_league_jikkyo/status/1506258030379225092
 <!-- /wp:heading -->
 
 <!-- wp:list -->
-<ul><li>ABEMA TV <a href="%s" target="_blank" rel="noreferrer noopener">ハイライト</a></li><li>ABEMA TV <a rel="noreferrer noopener" href="%s" target="_blank">第1試合動画</a></li><li>ABEMA TV <a rel="noreferrer noopener" href="%s" target="_blank">第2試合動画</a></li></ul>
+<ul><li>ABEMA TV <a rel="noreferrer noopener" href="%s" target="_blank">第1試合動画</a></li><li>ABEMA TV <a rel="noreferrer noopener" href="%s" target="_blank">第2試合動画</a></li></ul>
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
