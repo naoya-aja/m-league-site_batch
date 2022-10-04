@@ -5,16 +5,16 @@
 $base_url = 'https://m-league.jp/games';
 
 /**
- * 2021 シーズン
+ * 2022-23 シーズン
  */
-$season_year = 2021;
+$season_year = 2022;
 
-// $term_nm = 'regular';
+$term_nm = 'regular';
 // $term_nm = 'semifinal';
-$term_nm = 'final';
-$regular_term = ['2021-10-04', '2022-03-11'];
-$semifinal_term = ['2022-03-21', '2022-04-08'];
-$final_term = ['2022-04-18', '2022-04-26'];
+// $term_nm = 'final';
+$regular_term = ['2022-10-03', '2023-03-21'];
+// $semifinal_term = ['2022-03-21', '2022-04-08'];
+// $final_term = ['2022-04-18', '2022-04-26'];
 $this_term = ${"${term_nm}_term"};
 
 // チームメンバー
@@ -34,8 +34,8 @@ $team_members = [
 	'サクラナイツ' => [
 		'内川幸太郎',
 		'岡田紗佳',
-		'沢崎誠',
 		'堀慎吾',
+		'渋川難波',
 	],
 	'麻雀格闘倶楽部' => [
 		'佐々木寿人',
@@ -63,51 +63,51 @@ $team_members = [
 	],
 	'Pirates' => [
 		'小林剛',
-		'朝倉康心',
-		'石橋伸洋',
 		'瑞原明奈',
+		'鈴木優',
+		'仲林圭',
 	],
 ];
 
 // regular
 $teams = array_keys($team_members);
 $initial_datas = array_fill(0, count($teams), array());
-if ($term_nm == 'semifinal') {
-	// 進出チーム
-	$teams = array(
-		'風林火山',
-		'サクラナイツ',
-		'麻雀格闘倶楽部',
-		'ABEMAS',
-		'PHOENIX',
-		'Pirates',
-	);
-	// 持越分 * 100
-	$initial_datas = array(
-		array(9220),	// 風林火山
-		array(8850),	// サクラナイツ
-		array(12450),	// 麻雀格闘倶楽部
-		array(16410),	// ABEMAS
-		array(9210),	// PHOENIX
-		array(18860),	// Pirates
-	);
-}
-if ($term_nm == 'final') {
-	// 進出チーム
-	$teams = array(
-		'サクラナイツ',
-		'麻雀格闘倶楽部',
-		'ABEMAS',
-		'PHOENIX',
-	);
-	// 持越分 * 100
-	$initial_datas = array(
-		array(12430),	// サクラナイツ
-		array(9250),	// 麻雀格闘倶楽部
-		array(6200),	// ABEMAS
-		array(6010),	// PHOENIX
-	);
-}
+// if ($term_nm == 'semifinal') {
+// 	// 進出チーム
+// 	$teams = array(
+// 		'風林火山',
+// 		'サクラナイツ',
+// 		'麻雀格闘倶楽部',
+// 		'ABEMAS',
+// 		'PHOENIX',
+// 		'Pirates',
+// 	);
+// 	// 持越分 * 100
+// 	$initial_datas = array(
+// 		array(9220),	// 風林火山
+// 		array(8850),	// サクラナイツ
+// 		array(12450),	// 麻雀格闘倶楽部
+// 		array(16410),	// ABEMAS
+// 		array(9210),	// PHOENIX
+// 		array(18860),	// Pirates
+// 	);
+// }
+// if ($term_nm == 'final') {
+// 	// 進出チーム
+// 	$teams = array(
+// 		'サクラナイツ',
+// 		'麻雀格闘倶楽部',
+// 		'ABEMAS',
+// 		'PHOENIX',
+// 	);
+// 	// 持越分 * 100
+// 	$initial_datas = array(
+// 		array(12430),	// サクラナイツ
+// 		array(9250),	// 麻雀格闘倶楽部
+// 		array(6200),	// ABEMAS
+// 		array(6010),	// PHOENIX
+// 	);
+// }
 
 $members = [];
 foreach ($teams as $i => $tnm) {
