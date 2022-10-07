@@ -84,8 +84,8 @@ function create_draft_post($series_no, $day_no, $date, $url1, $url2, $sum_day_no
 
 try {
 	$timezone = new DateTimeZone('Asia/Tokyo');
-	// $now = new DateTime('now', $timezone);
-	$now = new DateTime('2022/10/06', $timezone);
+	$now = new DateTime('now', $timezone);
+	// $now = new DateTime('2022/10/06', $timezone);
 	$now->setTime(0, 0);
 } catch (Exception $e) {
 	var_dump($e->getMessage());
