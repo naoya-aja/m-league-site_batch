@@ -82,11 +82,12 @@ function update_game_post($the_slug, $urls) {
 	global $html_format;
 	if (count($urls) != 2) return false;
 
-	$format = '<li>キンマweb 第%d試合「<a href="%s">%s</a>」</li>';
+	$format = "<!-- wp:list-item -->\n<li>キンマweb 第%d試合「<a href=\"%s\">%s</a>」</li>\n<!-- /wp:list-item -->\n";
 	$insert_html = '';
 	foreach ($urls as $index => $arr) {
 		list($url, $title) = $arr;
 		$title = mb_strimwidth($title, 0, 66, '…', 'utf8');
+		if (!empty($insert_html)) $insert_html .= "\n";
 		$insert_html .= sprintf($format, $index + 1, $url, $title);
 	}
 
@@ -104,8 +105,8 @@ function update_game_post($the_slug, $urls) {
 	$content = $my_posts[0]->post_content;
 
 	// $search = "関連記事</h2>\n<!-- /wp:heading -->";
-	$search = "<!-- wp:list -->\n<ul><li>ABEMA TV";
-	$replace = sprintf("<!-- wp:list -->\n<ul>%s<li>ABEMA TV", $insert_html);
+	$search = "<!-- wp:list -->\n<ul><!-- wp:list-item -->\n<li>ABEMA TV";
+	$replace = sprintf("<!-- wp:list -->\n<ul>%s\n<!-- wp:list-item -->\n<li>ABEMA TV", $insert_html);
 	$new_content = str_replace($search, $replace, $content);
 
 	$post = array(
