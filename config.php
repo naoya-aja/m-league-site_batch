@@ -10,10 +10,10 @@ $base_url = 'https://m-league.jp/games';
 $season_year = 2022;
 
 $term_nm = 'regular';
-// $term_nm = 'semifinal';
+$term_nm = 'semifinal';
 // $term_nm = 'final';
 $regular_term = ['2022-10-03', '2023-03-21'];
-// $semifinal_term = ['2022-03-21', '2022-04-08'];
+$semifinal_term = ['2022-04-10', '2022-05-04'];
 // $final_term = ['2022-04-18', '2022-04-26'];
 $this_term = ${"${term_nm}_term"};
 
@@ -72,26 +72,26 @@ $team_members = [
 // regular
 $teams = array_keys($team_members);
 $initial_datas = array_fill(0, count($teams), array());
-// if ($term_nm == 'semifinal') {
-// 	// 進出チーム
-// 	$teams = array(
-// 		'風林火山',
-// 		'サクラナイツ',
-// 		'麻雀格闘倶楽部',
-// 		'ABEMAS',
-// 		'PHOENIX',
-// 		'Pirates',
-// 	);
-// 	// 持越分 * 100
-// 	$initial_datas = array(
-// 		array(9220),	// 風林火山
-// 		array(8850),	// サクラナイツ
-// 		array(12450),	// 麻雀格闘倶楽部
-// 		array(16410),	// ABEMAS
-// 		array(9210),	// PHOENIX
-// 		array(18860),	// Pirates
-// 	);
-// }
+if ($term_nm == 'semifinal') {
+	// 進出チーム
+	$teams = array(
+		'風林火山',
+		'サクラナイツ',
+		'麻雀格闘倶楽部',
+		'ABEMAS',
+		'雷電',
+		'Pirates',
+	);
+	// 持越分 * 100
+	$initial_datas = array(
+		array(29305),	// 風林火山
+		array(-2075),	// サクラナイツ
+		array(29610),	// 麻雀格闘倶楽部
+		array(2780),	// ABEMAS
+		array(-2120),	// 雷電
+		array(-3065),	// Pirates
+	);
+}
 // if ($term_nm == 'final') {
 // 	// 進出チーム
 // 	$teams = array(
