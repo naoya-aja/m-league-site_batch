@@ -125,6 +125,7 @@ if (empty($after_date)) {
 } else {
 	$after_date = unserialize($after_date);
 }
+$ts_after_date = strtotime($after_date);
 $args = array(
 	'date_query' => array(
 		array(
@@ -175,6 +176,7 @@ if ( $the_query->have_posts() ) {
 		if (empty($date_list[$day - 1])) continue;
 		$date = $date_list[$day - 1];
 		$ts = strtotime($date);
+		if ($ts <= $ts_after_date) continue;
 		$date = date("Y-m-d", $ts);
 		$the_slug ='game-' . $date;
 		if (!in_array($round, [1, 2])) {
