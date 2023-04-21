@@ -9,11 +9,11 @@ $base_url = 'https://m-league.jp/games';
  */
 $season_year = 2022;
 
-$term_nm = 'regular';
+// $term_nm = 'regular';
 $term_nm = 'semifinal';
 // $term_nm = 'final';
 $regular_term = ['2022-10-03', '2023-03-21'];
-$semifinal_term = ['2022-04-10', '2022-05-04'];
+$semifinal_term = ['2023-04-10', '2023-05-04'];
 // $final_term = ['2022-04-18', '2022-04-26'];
 $this_term = ${"${term_nm}_term"};
 
@@ -84,12 +84,12 @@ if ($term_nm == 'semifinal') {
 	);
 	// 持越分 * 100
 	$initial_datas = array(
-		array(29305),	// 風林火山
-		array(-2075),	// サクラナイツ
+		array(29310),	// 風林火山
+		array(-2070),	// サクラナイツ
 		array(29610),	// 麻雀格闘倶楽部
 		array(2780),	// ABEMAS
 		array(-2120),	// 雷電
-		array(-3065),	// Pirates
+		array(-3060),	// Pirates
 	);
 }
 // if ($term_nm == 'final') {
