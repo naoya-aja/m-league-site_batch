@@ -244,7 +244,7 @@ $file = sprintf('%s/%d-%s-tm.csv', __DIR__, $season_year, $term_nm);
 csvoutput($file, $ranking_teams);
 
 // 個人成績
-$csv_heder = array('#' ,'選手名' ,'チーム' ,'半荘数' ,'Pt' ,'最高スコア' ,'4着回避率' ,'1着' ,'2着' ,'3着' ,'4着');
+$csv_heder = array('#' ,'選手名' ,'チーム' ,'半荘' ,'Pt' ,'最高S' ,'4着回避' ,'1着' ,'2着' ,'3着' ,'4着');
 array_unshift($ranking_members, $csv_heder);
 $file = sprintf('%s/%d-%s-indiv.csv', __DIR__, $season_year, $term_nm);
 csvoutput($file, $ranking_members);
