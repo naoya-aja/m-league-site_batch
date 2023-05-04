@@ -16,6 +16,25 @@ $csv_file = dirname(__DIR__) . '/csv_master/abematv.csv';
 // $url2 = 'https://m-league.aja0.com/category/game/';
 // $url3 = 'https://m-league.aja0.com/news/';
 
+/**
+ * twitter URL生成関数
+ *
+ * @param timestamp $ts	日付のタイムスタンプ
+ * @param string $account twitterアカウント
+ * @return string URL
+ */
+function get_twitter_url($ts, $account) {
+	$format = 'https://twitter.com/search?f=live&q=(%s)%s&src=typed_query';
+	// $format = 'https://twitter.com/search?q=(%s)%s&amp;f=live';
+	$since = date('Y-m-d', $ts);
+	$until = date('Y-m-d', strtotime('+1 day', $ts));
+	$from = 'from:' . $account;
+	$from = rawurlencode($from);
+	$term = sprintf(' until:%s since:%s', $until, $since);
+	$term = rawurlencode($term);
+	return sprintf($format, $from, $term);
+}
+
 function check_post($the_slug) {
 	// スラッグから投稿を取得
 	$args=array(
@@ -66,7 +85,8 @@ function create_draft_post($series_no, $day_no, $date, $url1, $url2, $sum_day_no
 		'セミファイナルシリーズ',
 		'ファイナルシリーズ',
 	];
-	$content_title = 'Mリーグ%d %s %d日目/%d日';
+	$season_to_y = ($season_year + 1) % 100;
+	$content_title = 'Mリーグ%d-%02d %s %d日目/%d日';
 	$title = '試合結果 %s'; // 例) 試合結果 2022/03/22
 
 	$ts = strtotime($date);
@@ -75,9 +95,11 @@ function create_draft_post($series_no, $day_no, $date, $url1, $url2, $sum_day_no
 	$i = $series_no - 1;
 	if (empty($series_titles[$i])) return;
 	$t = $series_titles[$i];
-	$content_title = sprintf($content_title, $season_year, $t, $day_no, $sum_day_no);
+	$content_title = sprintf($content_title, $season_year, $season_to_y, $t, $day_no, $sum_day_no);
+	$twitter_url1 = get_twitter_url($ts, 'm_league_jikkyo');
+	$twitter_url2 = get_twitter_url($ts, 'm_league_');
 	$content = file_get_contents($temp_file);
-	$content = sprintf($content, $content_title, $url1, $url2);
+	$content = sprintf($content, $content_title, $url1, $url2, $twitter_url1, $twitter_url2);
 
 	insert_draft_post($date, $title, $content);
 }

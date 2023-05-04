@@ -61,7 +61,9 @@ function update_game_post($the_slug, $urls) {
 	$post_id = $my_posts[0]->ID;
 	$content = $my_posts[0]->post_content;
 
-	$search = "関連記事</h2>\n<!-- /wp:heading -->";
+	// $search = "関連記事</h2>\n<!-- /wp:heading -->";
+	$search = "麻雀ウォッチ</h3>\n<!-- /wp:heading -->";
+
 	$replace = $search . "\n\n" . $insert_html;
 	$new_content = str_replace($search, $replace, $content);
 
