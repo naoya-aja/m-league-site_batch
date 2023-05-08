@@ -98,7 +98,7 @@ function update_game_post($the_slug, $urls) {
 	$args=array(
 		'name'				=> $the_slug,
 		'post_type'			=> 'post',
-		'post_status'		=> 'publish',
+		'post_status'		=> 'publish,future,draft',
 		'posts_per_page'	=> 1
 	);
 	$my_posts = get_posts($args);

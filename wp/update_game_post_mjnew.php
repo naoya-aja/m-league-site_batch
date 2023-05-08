@@ -38,7 +38,7 @@ EOD;
  * $the_slug: 例） game-2022-03-11
  * $urls: 第1試合と第2試合のURL
  */
-function update_game_post($the_slug, $urls) {
+function update_game_post($the_slug, $urls, $thumbnail_ids) {
 	global $html_format;
 	if (count($urls) != 2) return false;
 
@@ -52,7 +52,7 @@ function update_game_post($the_slug, $urls) {
 	$args=array(
 		'name'				=> $the_slug,
 		'post_type'			=> 'post',
-		'post_status'		=> 'publish',
+		'post_status'		=> 'publish,future,draft',
 		'posts_per_page'	=> 1
 	);
 	$my_posts = get_posts($args);
@@ -73,6 +73,15 @@ function update_game_post($the_slug, $urls) {
 	);
 	// var_dump($new_content);
 	wp_update_post($post);
+
+	if (!has_post_thumbnail($post_id)) {
+		array_filter($thumbnail_ids);
+		if (!empty($thumbnail_ids)) {
+			shuffle($thumbnail_ids);
+			$thumbnail_id = $thumbnail_ids[0];
+			set_post_thumbnail($post_id, $thumbnail_id);
+		}
+	}
 	return true;
 }
 
@@ -139,22 +148,25 @@ if ( $the_query->have_posts() ) {
 		$date = date("Y-m-d", $ts);
 		$the_slug ='game-' . $date;
 		$url = get_permalink();
+		$thumbnail_id = get_post_thumbnail_id();
 		if (empty($save_news)) {
-			$save_news = compact('the_slug', 'round', 'url');
+			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id');
 			continue;
 		}
 		if ($save_news['the_slug'] != $the_slug) {
 			$msg = sprintf('[%s]: 日付エラー: %s,%d - %s,%d%s', date('c'),
 				$save_news['the_slug'], $save_news['round'], $the_slug, $round, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
-			$save_news = compact('the_slug', 'round', 'url');
+			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id');
 			continue;
 		}
 
 		if ($round == 1 && $save_news['round'] == 2) {
 			$urls = [$url, $save_news['url']];
+			$thumbnail_ids = [$thumbnail_id, $save_news['thumbnail_id']];
 		} elseif ($round == 2 && $save_news['round'] == 1) {
 			$urls = [$save_news['url'], $url];
+			$thumbnail_ids = [$save_news['thumbnail_id'], $thumbnail_id];
 		} else {
 			$msg = sprintf('[%s]: Roundエラー: %s (%d,%d)%s', date('c'),
 				$the_slug, $save_news['round'], $round, PHP_EOL);
@@ -163,7 +175,7 @@ if ( $the_query->have_posts() ) {
 			continue;
 		}
 		var_dump($the_slug);
-		if (!update_game_post($the_slug, $urls)) {
+		if (!update_game_post($the_slug, $urls, $thumbnail_ids)) {
 			$msg = sprintf('[%s]: update_game_post ERROR: %s%s', date('c'), $the_slug, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			break;	// 更新できない場合は終了
