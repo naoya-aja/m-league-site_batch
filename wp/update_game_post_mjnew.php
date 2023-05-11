@@ -38,7 +38,7 @@ EOD;
  * $the_slug: 例） game-2022-03-11
  * $urls: 第1試合と第2試合のURL
  */
-function update_game_post($the_slug, $urls, $thumbnail_ids) {
+function update_game_post($the_slug, $urls, $thumbnail_ids, $commentators) {
 	global $html_format;
 	if (count($urls) != 2) return false;
 
@@ -67,6 +67,14 @@ function update_game_post($the_slug, $urls, $thumbnail_ids) {
 	$replace = $search . "\n\n" . $insert_html;
 	$new_content = str_replace($search, $replace, $content);
 
+	if (!empty($commentators)) {
+		$search = '<!-- wp:heading -->\n<h2 class="wp-block-heading" id="game-round1">第1試合</h2>\n<!-- /wp:heading -->';
+		$commentators_format = "<!-- wp:paragraph -->\n<p>実況：%s、解説：%s</p>\n<!-- /wp:paragraph -->";
+		$insert_html = sprintf($commentators_format, implode('、', $commentators[0]), implode('、', $commentators[1]));
+		$replace = $insert_html . "\n\n" . $search;
+		$new_content = str_replace($search, $replace, $content);
+	}
+
 	$post = array(
 		'ID'			=> $post_id,
 		'post_content'	=> $new_content,
@@ -83,6 +91,38 @@ function update_game_post($the_slug, $urls, $thumbnail_ids) {
 		}
 	}
 	return true;
+}
+
+/**
+ * 実況・解説の取得
+ * 実況:commentator
+ * 解説:analyst
+ *
+ * @param string $content 投稿の本文
+ * @param timestamp $ts	日付のタイムスタンプ
+ * @param string $account twitterアカウント
+ * @return array [0 => 実況者の配列, 1 => 解説者の配列]
+ */
+function get_commentators($content) {
+	$pattern = "/\<figcaption.*\>解説：(.+)　実況：(.+)　©ABEMA\<\/figcaption\>/";
+	preg_match($pattern, $content, $date_match);
+	if (empty($date_match))	return [];
+
+	$commentators = [];
+
+	// 実況
+	$str = strip_tags($date_match[2]);
+	$arr = explode('/', $str);
+	$arr = array_reverse(array_map('trim', $arr));
+	array_push($commentators, $arr);
+
+	// 解説
+	$str = strip_tags($date_match[1]);
+	$arr = explode('/', $str);
+	$arr = array_reverse(array_map('trim', $arr));
+	array_push($commentators, $arr);
+
+	return $commentators;
 }
 
 $after_date = file_get_contents($file_finish_date);
@@ -149,15 +189,19 @@ if ( $the_query->have_posts() ) {
 		$the_slug ='game-' . $date;
 		$url = get_permalink();
 		$thumbnail_id = get_post_thumbnail_id();
+
+		// 実況・解説の取得
+		$commentators = get_commentators(get_the_content());
+
 		if (empty($save_news)) {
-			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id');
+			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id', 'commentators');
 			continue;
 		}
 		if ($save_news['the_slug'] != $the_slug) {
 			$msg = sprintf('[%s]: 日付エラー: %s,%d - %s,%d%s', date('c'),
 				$save_news['the_slug'], $save_news['round'], $the_slug, $round, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
-			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id');
+			$save_news = compact('the_slug', 'round', 'url', 'thumbnail_id', 'commentators');
 			continue;
 		}
 
@@ -167,6 +211,7 @@ if ( $the_query->have_posts() ) {
 		} elseif ($round == 2 && $save_news['round'] == 1) {
 			$urls = [$save_news['url'], $url];
 			$thumbnail_ids = [$save_news['thumbnail_id'], $thumbnail_id];
+			$commentators = $save_news['commentators'];
 		} else {
 			$msg = sprintf('[%s]: Roundエラー: %s (%d,%d)%s', date('c'),
 				$the_slug, $save_news['round'], $round, PHP_EOL);
@@ -175,7 +220,7 @@ if ( $the_query->have_posts() ) {
 			continue;
 		}
 		var_dump($the_slug);
-		if (!update_game_post($the_slug, $urls, $thumbnail_ids)) {
+		if (!update_game_post($the_slug, $urls, $thumbnail_ids, $commentators)) {
 			$msg = sprintf('[%s]: update_game_post ERROR: %s%s', date('c'), $the_slug, PHP_EOL);
 			error_log($msg, 3, $file_errors_log);
 			break;	// 更新できない場合は終了
