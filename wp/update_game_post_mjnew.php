@@ -72,11 +72,12 @@ function update_game_post($the_slug, $urls, $thumbnail_ids, $commentators) {
 		$commentators_format = "<!-- wp:paragraph -->\n<p>実況：%s、解説：%s</p>\n<!-- /wp:paragraph -->";
 		$insert_html = sprintf($commentators_format, implode('、', $commentators[0]), implode('、', $commentators[1]));
 		$replace = $insert_html . "\n\n" . $search;
-		$new_content = str_replace($search, $replace, $content);
+		$new_content = str_replace($search, $replace, $new_content);
 	}
 
 	$post = array(
-		'ID'			=> $post_id,
+		'ID'	=> $post_id,
+		'post_status'		=> 'publish',
 		'post_content'	=> $new_content,
 	);
 	// var_dump($new_content);
