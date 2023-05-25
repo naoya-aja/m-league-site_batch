@@ -5,8 +5,8 @@ cd `dirname $0`
 /usr/local/bin/bash lote.sh 2>&1 1>/dev/null
 
 /usr/local/bin/php schedule.php 2>&1 1>/dev/null
-/usr/local/bin/php get_list.php 2>&1 1>/dev/null
-/usr/local/bin/php get_members.php 2>&1 1>/dev/null
+/usr/local/php/7.4/bin/php get_list.php 2>&1 1>/dev/null
+/usr/local/php/7.4/bin/php get_members.php 2>&1 1>/dev/null
 
 JSON_DIR="/home/xxxx/www/m-league/chart/2022"
 
