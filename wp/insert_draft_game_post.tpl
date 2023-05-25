@@ -6,10 +6,6 @@
 <p>%s</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
-<p>実況：、解説：</p>
-<!-- /wp:paragraph -->
-
 <!-- wp:heading -->
 <h2 class="wp-block-heading" id="game-round1">第1試合</h2>
 <!-- /wp:heading -->

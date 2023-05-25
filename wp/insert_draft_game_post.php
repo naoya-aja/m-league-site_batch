@@ -40,7 +40,7 @@ function check_post($the_slug) {
 	$args=array(
 		'name'				=> $the_slug,
 		'post_type'			=> 'post',
-		'post_status'		=> ['auto-draft', 'draft', 'publish'],
+		'post_status'		=> ['auto-draft', 'draft', 'publish', 'future'],
 		'posts_per_page'	=> 1
 	);
 	$posts = get_posts($args);

@@ -68,8 +68,16 @@ function update_game_post($the_slug, $urls, $thumbnail_ids, $commentators) {
 	$new_content = str_replace($search, $replace, $content);
 
 	if (!empty($commentators)) {
-		$search = '<!-- wp:heading -->\n<h2 class="wp-block-heading" id="game-round1">第1試合</h2>\n<!-- /wp:heading -->';
-		$commentators_format = "<!-- wp:paragraph -->\n<p>実況：%s、解説：%s</p>\n<!-- /wp:paragraph -->";
+		$search = <<< EOT
+			<!-- wp:heading -->
+			<h2 class="wp-block-heading" id="game-round1">第1試合</h2>
+			<!-- /wp:heading -->
+			EOT;
+		$commentators_format = <<< EOT
+			<!-- wp:paragraph -->
+			<p>実況：%s、解説：%s</p>
+			<!-- /wp:paragraph -->
+			EOT;
 		$insert_html = sprintf($commentators_format, implode('、', $commentators[0]), implode('、', $commentators[1]));
 		$replace = $insert_html . "\n\n" . $search;
 		$new_content = str_replace($search, $replace, $new_content);
