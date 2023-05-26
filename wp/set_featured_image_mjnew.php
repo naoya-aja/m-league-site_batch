@@ -6,7 +6,7 @@
 require_once(dirname(__DIR__) . '/config.php');
 require_once(__DIR__ . '/lib.php');
 require_once('/home/xxxx/www/m-league/wp-load.php');
-require_once(dirname(__DIR__) . '/phpQuery-onefile.php');
+require_once(dirname(__DIR__) . '/lib/phpQuery-onefile.php');
 
 // さらに使いたい機能に応じて必要なファイルをinclude
 // require_once(ABSPATH . 'wp-admin/includes/media.php');
