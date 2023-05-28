@@ -11,3 +11,4 @@ sleep 10
 sleep 5
 
 /usr/local/php/7.4/bin/php ./wp/set_featured_image_mjnew.php
+/usr/local/bin/php ./wp/set_featured_image.php

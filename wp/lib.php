@@ -1,4 +1,26 @@
 <?php
+require_once(dirname(__DIR__) . '/lib/OpenGraph.php');
+
+function get_og_image($url) {
+  $graph = OpenGraph::fetch($url);
+  $value = $graph->image;
+  $value_check = mb_convert_encoding($value, 'ISO-8859-1', 'UTF-8');
+
+  if (mb_detect_encoding($value_check) == 'UTF-8') {
+    $value = $value_check; // 文字化け解消
+  }
+
+  $detects = array(
+    'ASCII','EUC-JP','SJIS', 'JIS', 'CP51932','UTF-16', 'ISO-8859-1'
+  );
+
+  // 上記以外でもUTF-8以外の文字コードが渡ってきてた場合、UTF-8に変換する
+  if (mb_detect_encoding($value) != 'UTF-8') {
+    $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value, $detects, true));
+  }
+  return $value;
+}
+
 // アイキャッチ画像設定
 function set_featured_image($post_id, $tmp_path, $ext) {
 	$filename = pathinfo($tmp_path, PATHINFO_FILENAME) . '.' . $ext;
