@@ -7,7 +7,8 @@
  * 	麻雀ウォッチ:	4
  * 	キンマweb:		5
  */
-require_once(__DIR__ . '/lib.php');
+// /home/xxxx/batch/test
+// /home/xxxx/www/m-league/
 require_once('/home/xxxx/www/m-league/wp-load.php');
 echo "start ****\n";
 
@@ -25,36 +26,53 @@ $args_org = array(
 	'posts_per_page' => -1,	// ページングなし
 );
 
-$args = $args_org;
-$the_query = new WP_Query( $args );
+// アイキャッチ画像設定
+function set_featured_image($post_id, $tmp_path, $ext) {
+	$filename = pathinfo($tmp_path, PATHINFO_FILENAME) . '.' . $ext;
+	$upload_dir = wp_upload_dir();
+	if (wp_mkdir_p($upload_dir['path'])) {
+		$file = $upload_dir['path'] . '/' . $filename;
+	} else {
+		$file = $upload_dir['basedir'] . '/' . $filename;
+	}
+	rename($tmp_path, $file);
 
-if ( $the_query->have_posts() ) {
+	$filetype = wp_check_filetype( $filename, null );
+	$attachment = array(
+		'post_mime_type' => $filetype['type'],
+		'post_title'     => sanitize_file_name( $filename ),
+		'post_content'   => '',
+		'post_status'    => 'inherit'
+	);
+	$attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+	$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+	wp_update_attachment_metadata( $attach_id, $attach_data );
+	set_post_thumbnail( $post_id, $attach_id );
+}
+
+$keywords = ['Mリーグ', 'Mリーガー'];
+foreach ($keywords as $keyword) {
+	$args = ['s' => $keyword] + $args_org;
+	$the_query = new WP_Query( $args );
+	if ( !$the_query->have_posts() ) continue;
+
 	while ( $the_query->have_posts() ) {
 		$the_query->the_post();
 		$post_id = get_the_ID();
 
-		$category = get_post_meta( $post_id, 'category', true );
-		if ( $category != '麻雀' ) continue;
-
 		if ( !has_post_thumbnail() ) {
-			$set_featured_image = false;
 			// 画像
-			$enclosure = get_post_meta( $post_id, 'enclosure', true );
-			$image_url = explode("\n", $enclosure)[0];
-			if ( !empty($image_url) ) {
-				$image_ext = pathinfo(
-					basename(parse_url($image_url, PHP_URL_PATH)),
-					PATHINFO_EXTENSION
-				);
-				$tmp_path = download_url( $image_url );
-				if ( !is_wp_error( $tmp_path ) ) {
-					set_featured_image($post_id, $tmp_path, $image_ext);
-					$set_featured_image = true;
-				}
-			}
-			if ( !$set_featured_image ) {
-				// ABEMA TIMES ロゴ画像を設定
+			$image_url = get_post_meta( $post_id, 'image', true );
+			$image_ext = pathinfo(
+				basename(parse_url($image_url, PHP_URL_PATH)),
+				PATHINFO_EXTENSION
+			);
+			$tmp_path = download_url( $image_url );
+			if ( is_wp_error( $tmp_path ) ) {
+				// download failed, handle error
 				set_post_thumbnail($post_id, 1418);	// abema times ロゴ画像
+			} else {
+				set_featured_image($post_id, $tmp_path, $image_ext);
 			}
 		}
 
